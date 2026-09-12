@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
-//! Library entry point for an Xmip component.
+//! Identify by message: reads one named property of the Message; a message-layer identifier
+//! whose claim is detected.
 //!
-//! Replace this template documentation only after the repository responsibility,
-//! public contracts and dependency direction are accepted in the Xmip architecture.
+//! Declared and not yet written: `architecture.toml` carries the maturity. When it
+//! is, it implements `MessageIdentifier` (ADR-0050).
