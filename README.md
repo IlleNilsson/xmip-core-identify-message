@@ -1,12 +1,6 @@
 # xmip-core-identify-message
 
-Identify by message: reads one named property of the Message; a message-layer identifier whose claim is detected. A technology of
-[xmip-core-identify](https://github.com/IlleNilsson/xmip-core-identify).
-
-Declared and not yet written; `architecture.toml` carries the maturity. When
-it is written it implements `MessageIdentifier`, one mechanism at one gate (ADR-0050).
-What it may depend on is `repository-model.md` section 4 and ADR-0044: its
-capability, and no sibling.
+Identify by message: reads one named property of the Message's context and calls it the claim, detected and unproven. A technology of [xmip-core-identify](https://github.com/IlleNilsson/xmip-core-identify).
 
 ## Toolchain
 
