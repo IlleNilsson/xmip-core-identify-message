@@ -19,10 +19,10 @@
 //! message.property   the key that was read   evidence
 //! ```
 
-use context::ContextValue;
 use identify::{IdentifyError, MessageIdentifier, Presented};
 use message::Message;
 use xcore::Mechanism;
+use xcore::ScalarValue;
 
 /// The evidence name carrying the key the claim was read from.
 pub const PROPERTY: &str = "message.property";
@@ -54,12 +54,12 @@ impl MessageIdentifier for MessageProperty {
 
     fn identify(&self, message: &Message) -> Result<Option<Presented>, IdentifyError> {
         let value = match message.context().get(&self.key) {
-            None | Some(ContextValue::Null) => return Ok(None),
-            Some(ContextValue::Text(text)) => text.trim().to_string(),
-            Some(ContextValue::Integer(number)) => number.to_string(),
-            Some(ContextValue::Bool(flag)) => flag.to_string(),
-            Some(ContextValue::Decimal(number)) => number.to_string(),
-            Some(ContextValue::Binary(_)) => {
+            None | Some(ScalarValue::Null) => return Ok(None),
+            Some(ScalarValue::Text(text)) => text.trim().to_string(),
+            Some(ScalarValue::Integer(number)) => number.to_string(),
+            Some(ScalarValue::Bool(flag)) => flag.to_string(),
+            Some(ScalarValue::Decimal(number)) => number.to_string(),
+            Some(ScalarValue::Binary(_)) => {
                 return Err(IdentifyError::new(format!(
                     "the property `{}` is binary and does not name anyone",
                     self.key
@@ -104,7 +104,7 @@ mod tests {
     #[test]
     fn a_promoted_property_is_presented_as_a_detected_claim_naming_its_key() {
         let context = MessageContext::new()
-            .with_value("edi.x12.isa06", ContextValue::Text("PARTNERX ".into()));
+            .with_value("edi.x12.isa06", ScalarValue::Text("PARTNERX ".into()));
 
         let claim = MessageProperty::new("edi.x12.isa06")
             .identify(&message(context))
@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn a_message_without_the_property_presents_nothing() {
         let context =
-            MessageContext::new().with_value("source.uri", ContextValue::Text("file:///in".into()));
+            MessageContext::new().with_value("source.uri", ScalarValue::Text("file:///in".into()));
 
         assert!(
             MessageProperty::new("edi.x12.isa06")
@@ -136,7 +136,7 @@ mod tests {
 
     #[test]
     fn a_numeric_property_is_presented_as_its_text() {
-        let context = MessageContext::new().with_value("partner.number", ContextValue::Integer(42));
+        let context = MessageContext::new().with_value("partner.number", ScalarValue::Integer(42));
 
         let claim = MessageProperty::new("partner.number")
             .identify(&message(context))
@@ -149,7 +149,7 @@ mod tests {
     #[test]
     fn a_binary_property_is_an_error_naming_the_key() {
         let context =
-            MessageContext::new().with_value("blob", ContextValue::Binary(vec![0xff, 0x00]));
+            MessageContext::new().with_value("blob", ScalarValue::Binary(vec![0xff, 0x00]));
 
         let failure = MessageProperty::new("blob")
             .identify(&message(context))
@@ -160,7 +160,7 @@ mod tests {
 
     #[test]
     fn an_empty_property_is_an_error_and_not_an_absence() {
-        let context = MessageContext::new().with_value("sender", ContextValue::Text("  ".into()));
+        let context = MessageContext::new().with_value("sender", ScalarValue::Text("  ".into()));
 
         let failure = MessageProperty::new("sender")
             .identify(&message(context))
