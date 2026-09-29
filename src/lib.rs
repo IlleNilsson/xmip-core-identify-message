@@ -103,15 +103,15 @@ mod tests {
 
     #[test]
     fn a_promoted_property_is_presented_as_a_detected_claim_naming_its_key() {
-        let context = MessageContext::new()
-            .with_value("edi.x12.isa06", ScalarValue::Text("PARTNERX ".into()));
+        let context =
+            MessageContext::new().with_value("edi.x12.isa06", ScalarValue::Text("PARTYX ".into()));
 
         let claim = MessageProperty::new("edi.x12.isa06")
             .identify(&message(context))
             .expect("read")
             .expect("a claim");
 
-        assert_eq!(claim.value, "PARTNERX");
+        assert_eq!(claim.value, "PARTYX");
         assert_eq!(claim.established, Established::Detected);
         assert_eq!(claim.layer(), Layer::Message);
         assert_eq!(claim.mechanism.name(), "message");
@@ -136,9 +136,9 @@ mod tests {
 
     #[test]
     fn a_numeric_property_is_presented_as_its_text() {
-        let context = MessageContext::new().with_value("partner.number", ScalarValue::Integer(42));
+        let context = MessageContext::new().with_value("party.number", ScalarValue::Integer(42));
 
-        let claim = MessageProperty::new("partner.number")
+        let claim = MessageProperty::new("party.number")
             .identify(&message(context))
             .expect("read")
             .expect("a claim");
