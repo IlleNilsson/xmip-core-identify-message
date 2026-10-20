@@ -8,8 +8,8 @@
 //! a `From` the envelope reader lifted. This identifier is told which key
 //! names the sender and reads it. The claim is *detected*: it was read out of
 //! what is there, nobody presented it, and nothing proves it. That is what
-//! ADR-0019 clause 5 means by identity travelling on the message layer, and
-//! why a Party recognised only this way is a question for authorization.
+//! ADR-0019 clause 5 means by identity traveling on the message layer, and
+//! why a Party recognized only this way is a question for authorization.
 //!
 //! The key is configuration, in the promoted property vocabulary the content
 //! technology chose — `edi.x12.isa06`, `hl7.msh.3`, `amqp.reply-to`. The
